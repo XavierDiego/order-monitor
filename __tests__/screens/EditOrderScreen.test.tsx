@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { EditOrderScreen } from '../../src/screens/EditOrderScreen';
 import { updateOrderStatus } from '../../src/api/orders';
 import { useOrdersStore } from '../../src/store/ordersStore';
@@ -104,11 +104,14 @@ describe('EditOrderScreen', () => {
     fireEvent.press(getByLabelText('status.completed'));
     fireEvent.press(getByLabelText('editOrder.save'));
 
-    await waitFor(() => expect(mockedUpdateOrderStatus).toHaveBeenCalled());
+    await act(async () => {
+      // Flush the mock Promise so handleSave's post-await code runs,
+      // registering setTimeout(goBack, 1200) before we advance the clock.
+      await Promise.resolve();
+      jest.advanceTimersByTime(1200);
+    });
 
-    jest.advanceTimersByTime(1200);
     expect(mockGoBack).toHaveBeenCalledTimes(1);
-
     jest.useRealTimers();
   });
 

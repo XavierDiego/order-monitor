@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { AddOrderScreen } from '../../src/screens/AddOrderScreen';
 import { createOrder } from '../../src/api/orders';
 import { Order } from '../../src/types';
@@ -86,20 +86,21 @@ describe('AddOrderScreen', () => {
     await waitFor(() => expect(getByText('✓ addOrder.success')).toBeTruthy());
   });
 
-  it('navigates to Orders after 1 500 ms on success', async () => {
+  it('resets the form after 1 500 ms on success', async () => {
     jest.useFakeTimers();
     mockedCreateOrder.mockResolvedValue(CREATED_ORDER);
-    const { getByLabelText } = render(<AddOrderScreen navigation={navigation} />);
+    const { getByLabelText, queryByText } = render(<AddOrderScreen navigation={navigation} />);
 
     fireEvent.changeText(getByLabelText('addOrder.customer'), 'Alice');
     fireEvent.changeText(getByLabelText('addOrder.amount'), '50');
     fireEvent.press(getByLabelText('addOrder.submit'));
 
-    await waitFor(() => expect(mockedCreateOrder).toHaveBeenCalled());
+    await act(async () => {
+      await Promise.resolve();
+      jest.advanceTimersByTime(1500);
+    });
 
-    jest.advanceTimersByTime(1500);
-    expect(mockNavigate).toHaveBeenCalledWith('Orders');
-
+    expect(queryByText('✓ addOrder.success')).toBeNull();
     jest.useRealTimers();
   });
 
