@@ -55,7 +55,7 @@ cp .env-example .env
 
 ```bash
 nvm use v22.13.0
-npm run dev
+npm run web
 ```
 
 ---
