@@ -7,11 +7,10 @@ const STATUSES  = ['pending', 'processing', 'completed'];
 function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 function simulateEvent() {
-  if (orders.length === 0) return;
 
   const eventId = newEventId();
   const roll    = Math.random();
-
+ 
   if (roll < 0.33) {
     const order = { id: newOrderId(), customer: randomFrom(CUSTOMERS), status: 'pending', amount: parseFloat((Math.random() * 500 + 10).toFixed(2)) };
     orders.push(order);
@@ -34,6 +33,11 @@ function simulateEvent() {
   }
 }
 
-setInterval(simulateEvent, 3_000);
+console.log(`============== Start events: ======================`);
+const eventId = newEventId();
+const roll    = Math.random();
+const order = { id: newOrderId(), customer: randomFrom(CUSTOMERS), status: 'pending', amount: parseFloat((Math.random() * 500 + 10).toFixed(2)) };
+orders.push(order);   
+broadcast({ type: 'NEW_ORDER', eventId, payload: order });
 
-console.log('  Sim  : events every 3s\n');
+setInterval(simulateEvent, 3_000);
