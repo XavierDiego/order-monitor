@@ -1,0 +1,13 @@
+const HOST = process.env.EXPO_PUBLIC_API_HOST ?? 'localhost';
+
+export const CONFIG = {
+  HTTP_BASE_URL: `http://${HOST}:3000`,
+  WS_URL: `ws://${HOST}:3001`,
+
+  WS_MAX_RECONNECT_ATTEMPTS: Infinity,
+  WS_BASE_DELAY_MS: 1_000,
+  WS_MAX_DELAY_MS: 30_000,
+  WS_PHASE2_AFTER_ATTEMPTS: 10,
+  WS_PHASE3_AFTER_ATTEMPTS: 20,
+  WS_PHASE4_AFTER_ATTEMPTS: 30,
+} as const;
