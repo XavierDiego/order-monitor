@@ -48,13 +48,13 @@ export function AddOrderScreen({ navigation }: Props) {
       setLoading(true);
       await createOrder({ customer: customer.trim(), amount: parsedAmount });
       setSuccess(true);
-      timerRef.current = setTimeout(() => navigation.navigate('Orders'), 1500);
+      timerRef.current = setTimeout(() => { setCustomer(''); setAmount(''); setSuccess(false); }, 1500);
     } catch {
       setError(t('error.title'));
     } finally {
       setLoading(false);
     }
-  }, [customer, amount, navigation, t]);
+  }, [customer, amount, t]);
 
   return (
     <SafeAreaView style={styles.root} edges={['bottom']}>
