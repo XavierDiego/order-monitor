@@ -62,15 +62,18 @@ npm run dev
 
 ### Passo 6 - Rodar o back-end
 
+Use **um dos dois** comandos abaixo — nunca os dois ao mesmo tempo, pois compartilham as mesmas portas (3000 e 3001):
+
+**Apenas o servidor** (sem simulação de eventos):
 ```bash
 nvm use v22.13.0
 npm run server
 ```
----
 
-### Passo 7 (OPCIONAL) - Para rodar o mock
-
+**Servidor + simulação de eventos automáticos**:
 ```bash
 nvm use v22.13.0
 npm run mock
 ```
+
+> `npm run mock` já inclui o servidor. Não é necessário rodar `npm run server` junto.
